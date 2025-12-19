@@ -11,8 +11,44 @@ namespace BT_WinForm.GUI
         public frmQuanLyNhanSu()
         {
             InitializeComponent();
-            // Thiết lập cột cho DataGridView
+           
             CaiDatDataGridView();
+
+           
+            ThemDuLieuMau();
+
+            
+            CapNhatDataGridView();
+        }
+
+        private void ThemDuLieuMau()
+        {
+            dsNhanVien.Add(new NhanVien
+            {
+                MaNV = "NV001",
+                HoTen = "Nguyễn Văn A",
+                NgaySinh = "01/01/1995",
+                GioiTinh = "Nam",
+                Luong = "15000000"
+            });
+
+            dsNhanVien.Add(new NhanVien
+            {
+                MaNV = "NV002",
+                HoTen = "Trần Thị B",
+                NgaySinh = "15/05/1998",
+                GioiTinh = "Nữ",
+                Luong = "12000000"
+            });
+
+            dsNhanVien.Add(new NhanVien
+            {
+                MaNV = "NV003",
+                HoTen = "Lê Văn C",
+                NgaySinh = "20/10/1990",
+                GioiTinh = "Nam",
+                Luong = "18000000"
+            });
         }
 
         private void CaiDatDataGridView()
@@ -104,29 +140,42 @@ namespace BT_WinForm.GUI
                 return;
             }
 
+            int index = dataGridView1.CurrentRow.Index;
+
             if (MessageBox.Show("Bạn có chắc muốn xóa nhân viên này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                int index = dataGridView1.CurrentRow.Index;
                 dsNhanVien.RemoveAt(index);
+
                 CapNhatDataGridView();
+
+                // QUAN TRỌNG: Xóa text box ngay lập tức
                 XoaTextBox();
+
+                // Nếu còn dữ liệu, chọn dòng đầu tiên hoặc dòng trước đó
+                if (dsNhanVien.Count > 0)
+                {
+                    int newIndex = Math.Min(index, dsNhanVien.Count - 1);
+                    dataGridView1.CurrentCell = dataGridView1.Rows[newIndex].Cells[0];
+                }
             }
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            if (dataGridView1.CurrentRow != null)
+            // KIỂM TRA AN TOÀN TRƯỚC KHI TRUY CẬP INDEX
+            if (dataGridView1.CurrentRow == null || dsNhanVien.Count == 0 || dataGridView1.CurrentRow.Index >= dsNhanVien.Count)
             {
-                int index = dataGridView1.CurrentRow.Index;
-                txtMaNV.Text = dsNhanVien[index].MaNV;
-                txtHoTen.Text = dsNhanVien[index].HoTen;
-                dtpNgaySinh.Value = DateTime.Parse(dsNhanVien[index].NgaySinh);
-                if (dsNhanVien[index].GioiTinh == "Nam")
-                    rbNam.Checked = true;
-                else
-                    rbNu.Checked = true;
-                txtLuong.Text = dsNhanVien[index].Luong;
+                XoaTextBox();
+                return;
             }
+
+            int index = dataGridView1.CurrentRow.Index;
+            txtMaNV.Text = dsNhanVien[index].MaNV;
+            txtHoTen.Text = dsNhanVien[index].HoTen;
+            dtpNgaySinh.Value = DateTime.ParseExact(dsNhanVien[index].NgaySinh, "dd/MM/yyyy", null);
+            rbNam.Checked = dsNhanVien[index].GioiTinh == "Nam";
+            rbNu.Checked = dsNhanVien[index].GioiTinh == "Nữ";
+            txtLuong.Text = dsNhanVien[index].Luong;
         }
 
         private void CapNhatDataGridView()
