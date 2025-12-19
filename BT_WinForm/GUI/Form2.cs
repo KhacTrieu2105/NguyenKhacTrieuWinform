@@ -14,7 +14,7 @@ namespace BT_WinForm.GUI
     {
         public Form2()
         {
-            InitializeComponent();
+            InitializeComponent(GetControls());
         }
 
         private void label1_Click(object sender, EventArgs e)

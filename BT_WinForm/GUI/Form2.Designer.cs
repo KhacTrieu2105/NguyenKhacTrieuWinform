@@ -20,13 +20,18 @@
             base.Dispose(disposing);
         }
 
+        private Control.ControlCollection GetControls()
+        {
+            return Controls;
+        }
+
         #region Windows Form Designer generated code
 
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        private void InitializeComponent(Control.ControlCollection controls)
         {
             checkBox1 = new CheckBox();
             dateTimePicker1 = new DateTimePicker();
@@ -35,7 +40,7 @@
             lb1 = new Label();
             txtBox1 = new TextBox();
             comboBox1 = new ComboBox();
-            listBox1 = new ListBox();
+            listBox1 = new System.Windows.Forms.ListBox();
             button1 = new Button();
             button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
@@ -142,7 +147,7 @@
             Controls.Add(lb1);
             Controls.Add(numericUpDown1);
             Controls.Add(radioButton1);
-            Controls.Add(dateTimePicker1);
+            controls.Add(dateTimePicker1);
             Controls.Add(checkBox1);
             Name = "Form2";
             Text = "Form2";
@@ -160,7 +165,7 @@
         private Label lb1;
         private TextBox txtBox1;
         private ComboBox comboBox1;
-        private ListBox listBox1;
+        private System.Windows.Forms.ListBox listBox1;
         private Button button1;
         private Button button2;
     }
